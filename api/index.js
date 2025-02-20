@@ -1,5 +1,10 @@
 const express = require("express");
-const { createCanvas } = require("canvas");
+const { createCanvas, registerFont } = require("canvas");
+const { join } = require("path");
+
+registerFont(join(__dirname, "static/CheeseOrange-Regular.ttf"), {
+  family: "cheese-orange",
+});
 
 const app = express();
 
@@ -15,13 +20,13 @@ app.get("/image", (req, res) => {
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
 
-  ctx.font = "40px Arial";
+  ctx.font = "40px cheese-orange";
   ctx.fillStyle = "#000000";
   ctx.textAlign = "center";
 
   const currentDate = new Date().toDateString();
 
-  ctx.fillText("Welcome! It's " + currentDate, width / 2, 50);
+  ctx.fillText("Welcome!   It's " + currentDate, width / 2, 50);
 
   const stream = canvas.createJPEGStream();
   stream.pipe(res);
