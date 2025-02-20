@@ -1,11 +1,11 @@
 const express = require("express");
-const path = require("path");
 const { createCanvas } = require("canvas");
-const fs = require("fs");
 
 const app = express();
 
 app.get("/image", (req, res) => {
+  res.setHeader("content-type", "image/jpg");
+
   const width = 800;
   const height = 70;
 
@@ -23,15 +23,8 @@ app.get("/image", (req, res) => {
 
   ctx.fillText("Welcome! It's " + currentDate, width / 2, 50);
 
-  const out = fs.createWriteStream("api/output.jpg");
   const stream = canvas.createJPEGStream();
-  stream.pipe(out);
-
-  out.on("finish", () => {
-    const imagePath = path.join(__dirname, "output.jpg");
-    res.setHeader("content-type", "image/jpg");
-    res.sendFile(imagePath);
-  });
+  stream.pipe(res);
 });
 
 app.listen(3000, () => console.log("Server ready on port 3000."));
