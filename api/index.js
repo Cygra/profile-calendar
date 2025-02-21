@@ -9,21 +9,34 @@ registerFont(join(__dirname, "static/CheeseOrange-Regular.ttf"), {
 const app = express();
 
 app.get("/image", (req, res) => {
-  const { textColor, bgColor, locale } = req.query;
+  const {
+    textColor,
+    bgColor,
+    locale,
+    fontSize,
+    textAlign,
+    width: queryWidth,
+    height: queryHeight,
+  } = req.query;
   res.setHeader("content-type", "image/jpg");
 
-  const width = 800;
-  const height = 70;
+  const width = queryWidth || 800;
+
+  const height = queryHeight || 70;
 
   const canvas = createCanvas(width, height);
+
   const ctx = canvas.getContext("2d");
 
   ctx.fillStyle = bgColor || "#ffffff";
+
   ctx.fillRect(0, 0, width, height);
 
-  ctx.font = "40px cheese-orange";
+  ctx.font = `${fontSize || 40}px cheese-orange`;
+
   ctx.fillStyle = textColor || "#000000";
-  ctx.textAlign = "center";
+
+  ctx.textAlign = textAlign || "center";
 
   const currentDate = locale
     ? new Date().toLocaleDateString(locale)
@@ -32,6 +45,7 @@ app.get("/image", (req, res) => {
   ctx.fillText("Welcome!   It's " + currentDate, width / 2, 50);
 
   const stream = canvas.createJPEGStream();
+
   stream.pipe(res);
 });
 
