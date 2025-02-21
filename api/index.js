@@ -18,11 +18,12 @@ app.get("/image", (req, res) => {
     width: queryWidth,
     height: queryHeight,
   } = req.query;
+
   res.setHeader("content-type", "image/jpg");
 
-  const width = queryWidth || 800;
+  const width = Number(queryWidth) || 800;
 
-  const height = queryHeight || 70;
+  const height = Number(queryHeight) || 70;
 
   const canvas = createCanvas(width, height);
 
