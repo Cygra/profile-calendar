@@ -1,8 +1,8 @@
-const express = require("express");
-const { createCanvas, registerFont } = require("canvas");
-const { join } = require("path");
+import { createCanvas, registerFont } from "canvas";
+import express from "express";
+import { join } from "path";
 
-registerFont(join(__dirname, "static/CheeseOrange-Regular.ttf"), {
+registerFont(join(__dirname, "fonts/CheeseOrange-Regular.ttf"), {
   family: "cheese-orange",
 });
 
@@ -29,18 +29,18 @@ app.get("/image", (req, res) => {
 
   const ctx = canvas.getContext("2d");
 
-  ctx.fillStyle = bgColor || "#ffffff";
+  ctx.fillStyle = (bgColor as string) || "#ffffff";
 
   ctx.fillRect(0, 0, width, height);
 
   ctx.font = `${fontSize || 40}px cheese-orange`;
 
-  ctx.fillStyle = textColor || "#000000";
+  ctx.fillStyle = (textColor as string) || "#000000";
 
-  ctx.textAlign = textAlign || "center";
+  ctx.textAlign = (textAlign as CanvasTextAlign) || "center";
 
   const currentDate = locale
-    ? new Date().toLocaleDateString(locale)
+    ? new Date().toLocaleDateString(locale as string)
     : new Date().toDateString();
 
   ctx.fillText("Welcome!   It's " + currentDate, width / 2, 50);
@@ -48,6 +48,10 @@ app.get("/image", (req, res) => {
   const stream = canvas.createJPEGStream();
 
   stream.pipe(res);
+});
+
+app.get("/", (req, res) => {
+  res.send("Express on Vercel");
 });
 
 app.listen(3000, () => console.log("Server ready on port 3000."));

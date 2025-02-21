@@ -2,3 +2,5 @@ node_modules
 output.jpg
 .vercel
 .DS_Store
+public
+dist
