@@ -16,7 +16,7 @@ app.get("/image", (req, res) => {
     title = "Welcome!",
   } = req.query as { [k: string]: string };
 
-  res.setHeader("content-type", "image/jpg");
+  res.setHeader("content-type", "image/png");
 
   registerFont(join(__dirname, `fonts/${font}.ttf`), {
     family: font,
@@ -55,7 +55,7 @@ app.get("/image", (req, res) => {
 
   ctx.fillText(textString, width / 2, height / 2);
 
-  const stream = canvas.createJPEGStream();
+  const stream = canvas.createPNGStream();
 
   stream.pipe(res);
 });
